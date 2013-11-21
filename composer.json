@@ -1,0 +1,20 @@
+{
+    "name": "ryun/filters",
+    "description": "",
+    "authors": [
+        {
+            "name": "ryun shofner",
+            "email": "ryun@humboldtweb.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Ryun\\Filters": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
