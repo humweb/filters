@@ -1,4 +1,4 @@
-<?php namespace Ryun\Filters;
+<?php namespace Humweb\Filters;
 
 use Illuminate\Support\Facades\LaravelFacade;
 

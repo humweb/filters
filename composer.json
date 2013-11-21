@@ -1,5 +1,5 @@
 {
-    "name": "ryun/filters",
+    "name": "humweb/filters",
     "description": "",
     "authors": [
         {
@@ -8,12 +8,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
-        "illuminate/support": "4.1.x"
+        "php": ">=5.4.0"
+    },
+     "suggest": {
+        "illuminate/support": "Allows you to use ServiceProviders and Facades"
     },
     "autoload": {
         "psr-0": {
-            "Ryun\\Filters": "src/"
+            "Humweb\\Filters": "src/"
         }
     },
     "minimum-stability": "dev"

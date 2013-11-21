@@ -1,6 +1,6 @@
 <?php
 
-use Ryun\Filters\Filter;
+use Humweb\Filters\Filter;
 
 class FilterClassTest extends PHPUnit_Framework_TestCase
 {
@@ -17,6 +17,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->filter = new Filter();
     }
 
+    //Basic filter usage
     public function testBasicAddAndApplyUsage()
     {
 
@@ -38,7 +39,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
     }
 
 
-    //Use apply
+    //Apply filter while passing filter value
     public function testFilterApplyWithPassThruValues()
     {
         $this->addFilter('applytitle', 99, function($v)
@@ -51,7 +52,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Foo subtitle FooFilter #1', $result);
     }
 
-    //Priority
+    //Filter priority
     public function testFilterPriority()
     {
         $this->addFilter('subtitle', 99, function($v)
@@ -71,6 +72,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('FooFilter #2', $result);
     }
 
+    //Clear filters
     public function testAddAndClearFilters()
     {
 
@@ -87,7 +89,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Foo cleartitle', $result);
     }
 
-    //Remove By Ref
+    //Remove by Referrence
     public function testAddAndRemoveByReferrence()
     {
         $this->addFilter('reftitle', 100, function($v)
@@ -112,8 +114,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Ref Title #2', $result);
     }
 
-    // tests
-
+    // Helper method to quickly add tests
     private function addFilter($name, $priority = 100, $callback = null, $ref = null)
     {
         $callback = $callback ?: function($v) { return 'default-filter'; };
