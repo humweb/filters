@@ -5,10 +5,15 @@ use Closure;
 class Filter
 {
     /**
-     * Filters array
+     * Unsorted filters array
      * @var array
      */
     protected $filters = array();
+
+    /**
+     * Sorted filters array
+     * @var array
+     */
     protected $sorted = array();
 
     /**
@@ -16,7 +21,7 @@ class Filter
      * 
      * @param string  $name     filter name
      * @param Closure $func     closure function to be applied
-     * @param integer $priority priority/weight used for sorting
+     * @param integer $priority priority used for sorting
      * @param string  $ref      reference allows us to remove a specific filter
      */
     public function add($name, Closure $func, $priority = 100, $ref = null)
@@ -41,8 +46,9 @@ class Filter
 
     /**
      * Apply a filter to something
+     * 
      * @param  string $name  filter name
-     * @param  mixed  $value an item we want to apply the filter for
+     * @param  mixed  $value an item we want to apply the filter to
      * @return mixed
      */
     public function apply($name, $value)
@@ -101,7 +107,8 @@ class Filter
 
 
     /**
-     * Clear fiilters by filter name
+     * Clear all filters by name
+     * 
      * @param  string $name filter name
      * @return void
      */
@@ -114,6 +121,7 @@ class Filter
 
     /**
      * Handles dynamic apply calls
+     * 
      * @param  string $method     filter name
      * @param  array  $parameters parameters get passed to apply
      * @return mixed
@@ -139,9 +147,6 @@ class Filter
     {
         $this->sorted[$name] = array();
 
-        // If listeners exist for the given event, we will sort them by the priority
-        // so that we can call them in the correct order. We will cache off these
-        // sorted event listeners so we do not have to re-sort on every events.
         if (isset($this->filters[$name]))
         {
             uasort($this->filters[$name], array($this, 'sortHandler'));
@@ -151,7 +156,8 @@ class Filter
     }
     
     /**
-     * Sort handler (uasort)
+     * Sort handler method used by: uasort
+     * 
      * @param  int $a compare a
      * @param  int $b compare b
      * @return int

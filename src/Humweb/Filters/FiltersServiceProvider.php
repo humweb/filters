@@ -18,7 +18,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-        $this->app['filter'] = $this->app->share(function ($app) {
+        $this->app['humweb.filters'] = $this->app->share(function ($app) {
             return new Filter();
         });
 	}

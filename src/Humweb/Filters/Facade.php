@@ -9,5 +9,5 @@ class Facade extends LaravelFacade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'ryun.filter'; }
+    protected static function getFacadeAccessor() { return 'humweb.filters'; }
 }
