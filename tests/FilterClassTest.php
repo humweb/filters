@@ -17,14 +17,14 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         $this->filter = new Filter();
     }
 
-    public function testFilterBasicUsage()
+    public function testBasicAddAndApplyUsage()
     {
 
         $this->addFilter('title');
         
         $this->filter->add('title', function($v)
         {
-            return 'FooFilter #1';
+            return 'default-filter';
         });
         
         $this->filter->add('title', function($v)
@@ -32,17 +32,26 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
             return 'FooFilter #2';
         });
 
-        $expects = 'FooFilter #1';
-        $result = $this->filter->title('Foo title');
+        $result = $this->filter->apply('title', 'Foo title');
         
-        $this->assertEquals($expects, $result);
+        $this->assertEquals('default-filter', $result);
     }
 
-    //Remove By Ref
 
     //Use apply
-    
+    public function testFilterApplyWithPassThruValues()
+    {
+        $this->addFilter('applytitle', 99, function($v)
+        {
+            return $v.' FooFilter #1';
+        });
 
+        $result =$this->filter->apply('applytitle', 'Foo subtitle');
+        
+        $this->assertEquals('Foo subtitle FooFilter #1', $result);
+    }
+
+    //Priority
     public function testFilterPriority()
     {
         $this->addFilter('subtitle', 99, function($v)
@@ -57,10 +66,9 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
             return 'FooFilter #2';
         });
 
-        $expects = 'FooFilter #2';
-        $result =$this->filter->subtitle('Foo subtitle');
+        $result =$this->filter->apply('subtitle', 'Foo subtitle');
         
-        $this->assertEquals($expects, $result);
+        $this->assertEquals('FooFilter #2', $result);
     }
 
     public function testAddAndClearFilters()
@@ -68,27 +76,49 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
 
         $this->addFilter('cleartitle');
         
-        $expects = 'FooFilter #1';
-        $result = $this->filter->cleartitle('Foo cleartitle');
-        $this->assertEquals($expects, $result);
+        $result = $this->filter->apply('cleartitle', 'Foo cleartitle');
+        $this->assertEquals('default-filter', $result);
 
         //clear filters
         $this->filter->clear('cleartitle');
 
-        $expects = 'Foo cleartitle';
-        $result =$this->filter->cleartitle('Foo cleartitle');
+        $result =$this->filter->apply('cleartitle', 'Foo cleartitle');
         
-        $this->assertEquals($expects, $result);
+        $this->assertEquals('Foo cleartitle', $result);
     }
 
+    //Remove By Ref
+    public function testAddAndRemoveByReferrence()
+    {
+        $this->addFilter('reftitle', 100, function($v)
+        {
+            return 'Ref Title #1';
+        }, 'foo-ref');
+        
+        $this->addFilter('reftitle', 100, function($v)
+        {
+            return 'Ref Title #2';
+        }, 'foo-bar');
+        
+        $this->addFilter('reftitle', 100, function($v)
+        {
+            return 'Ref Title #3';
+        }, 'foo-ref');
+        
+        $this->filter->remove('reftitle', 'foo-ref');
+        
+        $result = $this->filter->apply('reftitle', 'Foo reftitle');
+        
+        $this->assertEquals('Ref Title #2', $result);
+    }
 
     // tests
 
-    private function addFilter($name, $priority = 100, $callback = null)
+    private function addFilter($name, $priority = 100, $callback = null, $ref = null)
     {
-        $callback = $callback ?: function($v) { return 'FooFilter #1'; };
+        $callback = $callback ?: function($v) { return 'default-filter'; };
 
-        $this->filter->add($name, $callback, $priority);
+        $this->filter->add($name, $callback, $priority, $ref);
     }
 
 }
