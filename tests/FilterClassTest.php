@@ -84,7 +84,7 @@ class FilterClassTest extends PHPUnit_Framework_TestCase
         //clear filters
         $this->filter->clear('cleartitle');
 
-        $result =$this->filter->apply('cleartitle', 'Foo cleartitle');
+        $result = $this->filter->apply('cleartitle', 'Foo cleartitle');
         
         $this->assertEquals('Foo cleartitle', $result);
     }
